@@ -1,64 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sokolades Varde</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        
-        h1 {
-            margin-bottom: 1rem;
-        }
-        
-        p {
-            margin-bottom: 1rem;
-        }
-        
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Magical Candy Shop</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.item-row {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+}
+
+.item-name {
+    flex: 1;
+}
+
+button {
+    margin-left: 5px;
+}
+
+#basket {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    min-height: 80px;
+}
+
+#total {
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style>
 </head>
+
 <body>
-    <header>
-        <h1>Welcome to Sokolades Varde</h1>
-    </header>
-    
-    <main>
-        <h2>About</h2>
-        <p>This is your main page. Add your content here!</p>
-    </main>
-    
-    <footer>
-        <p>&copy; 2026 Sokolades Varde. All rights reserved.</p>
-    </footer>
+
+<h2>Magical Candy Shop</h2>
+
+<div id="items"></div>
+
+<h3>Basket:</h3>
+<div id="basket"></div>
+
+<div id="total">Total: 0G 0S 0K</div>
+
+<button onclick="checkout()">CHECKOUT</button>
+<button onclick="resetBasket()">New Order</button>
+
+<script>
+// Currency system
+const KNUTAS_IN_SIRPS = 5;
+const SIRPS_IN_GALEON = 5;
+const KNUTAS_IN_GALEON = KNUTAS_IN_SIRPS * SIRPS_IN_GALEON;
+
+function toKnutas(g=0,s=0,k=0){
+    return g*KNUTAS_IN_GALEON + s*KNUTAS_IN_SIRPS + k;
+}
+
+function fromKnutas(total){
+    const g = Math.floor(total / KNUTAS_IN_GALEON);
+    const remainder = total % KNUTAS_IN_GALEON;
+    const s = Math.floor(remainder / KNUTAS_IN_SIRPS);
+    const k = remainder % KNUTAS_IN_SIRPS;
+    return {g,s,k};
+}
+
+function formatMoney(knutas){
+    const m = fromKnutas(knutas);
+    return `${m.g}G ${m.s}S ${m.k}K`;
+}
+
+// Items
+const items = {
+    "Strupa apmetņu striķi": toKnutas(0,2,3),
+    "Sviedene": toKnutas(0,0,4),
+    "Hagrida Zizlis": toKnutas(0,1,2),
+    "Šokolādes varde": toKnutas(0,3,0),
+    "Mājas elfs": toKnutas(1,2,3)
+};
+
+let basket = {};
+let totalKnutas = 0;
+
+for(let name in items){
+    basket[name] = 0;
+}
+
+const itemsDiv = document.getElementById("items");
+
+for(let name in items){
+    const row = document.createElement("div");
+    row.className = "item-row";
+
+    const label = document.createElement("div");
+    label.className = "item-name";
+    label.textContent = `${name} (${formatMoney(items[name])})`;
+
+    const addBtn = document.createElement("button");
+    addBtn.textContent = "+";
+    addBtn.onclick = () => addItem(name);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "-";
+    removeBtn.onclick = () => removeItem(name);
+
+    row.appendChild(label);
+    row.appendChild(addBtn);
+    row.appendChild(removeBtn);
+    itemsDiv.appendChild(row);
+}
+
+function addItem(name){
+    basket[name]++;
+    totalKnutas += items[name];
+    updateDisplay();
+}
+
+function removeItem(name){
+    if(basket[name] > 0){
+        basket[name]--;
+        totalKnutas -= items[name];
+        updateDisplay();
+    }
+}
+
+function updateDisplay(){
+    const basketDiv = document.getElementById("basket");
+    basketDiv.innerHTML = "";
+
+    for(let name in basket){
+        if(basket[name] > 0){
+            const line = document.createElement("div");
+            line.textContent = `${name} x${basket[name]}`;
+            basketDiv.appendChild(line);
+        }
+    }
+
+    document.getElementById("total").textContent =
+        "Total: " + formatMoney(totalKnutas);
+}
+
+function checkout(){
+    if(totalKnutas === 0){
+        alert("No items selected!");
+        return;
+    }
+
+    let receipt = "Receipt\n\n";
+
+    for(let name in basket){
+        if(basket[name] > 0){
+            const lineTotal = basket[name] * items[name];
+            receipt += `${name} x${basket[name]} - ${formatMoney(lineTotal)}\n`;
+        }
+    }
+
+    receipt += "\nTOTAL: " + formatMoney(totalKnutas);
+
+    alert(receipt);
+}
+
+function resetBasket(){
+    totalKnutas = 0;
+    for(let name in basket){
+        basket[name] = 0;
+    }
+    updateDisplay();
+}
+</script>
+
 </body>
 </html>

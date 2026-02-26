@@ -7,14 +7,20 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    max-width: 600px;
+    max-width: 700px;
     margin: 30px auto;
 }
 
 .item-row {
-    margin: 6px 0;
+    margin: 8px 0;
     display: flex;
     align-items: center;
+}
+
+.item-row img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 }
 
 .item-name {
@@ -22,7 +28,7 @@ body {
 }
 
 button {
-    margin-left: 10px;
+    margin-left: 8px;
 }
 
 #basket {
@@ -48,7 +54,7 @@ button {
 <h3>Grozā šobrīd:</h3>
 <div id="basket"></div>
 
-<div id="total">Summa: 0G 0S 0K</div>
+<div id="total">Kopā jāmaksā: 0G 0S 0K</div>
 
 <button onclick="checkout()">PIRKT</button>
 <button onclick="resetBasket()">Jauns pirkums</button>
@@ -76,13 +82,13 @@ function formatMoney(knutas){
     return `${m.g}G ${m.s}S ${m.k}K`;
 }
 
-// Items
+// Items WITH images
 const items = {
-    "Strupa apmetņu striķi": toKnutas(0,2,3),
-    "Sviedene": toKnutas(0,0,4),
-    "Hagrida Zizlis": toKnutas(0,1,2),
-    "Šokolādes varde": toKnutas(0,3,0),
-    "Mājas elfs": toKnutas(1,2,3)
+    "Strupa apmetņu striķi": { price: toKnutas(0,2,3), image: "images/pirmais.avif" },
+    "Sviedene": { price: toKnutas(0,0,4), image: "images/otrais.avif" },
+    "Hagrida Zizlis": { price: toKnutas(0,1,2), image: "images/tresais.png" },
+    "Šokolādes varde": { price: toKnutas(0,3,0), image: "images/ceturtais.png" },
+    "Mājas elfs": { price: toKnutas(1,2,3), image: "images/piektais.png" }
 };
 
 let basket = {};
@@ -98,9 +104,12 @@ for(let name in items){
     const row = document.createElement("div");
     row.className = "item-row";
 
+    const img = document.createElement("img");
+    img.src = items[name].image;
+
     const label = document.createElement("div");
     label.className = "item-name";
-    label.textContent = `${name} (${formatMoney(items[name])})`;
+    label.textContent = `${name} (${formatMoney(items[name].price)})`;
 
     const addBtn = document.createElement("button");
     addBtn.textContent = "+";
@@ -110,22 +119,24 @@ for(let name in items){
     removeBtn.textContent = "-";
     removeBtn.onclick = () => removeItem(name);
 
+    row.appendChild(img);
     row.appendChild(label);
     row.appendChild(addBtn);
     row.appendChild(removeBtn);
+
     itemsDiv.appendChild(row);
 }
 
 function addItem(name){
     basket[name]++;
-    totalKnutas += items[name];
+    totalKnutas += items[name].price;
     updateDisplay();
 }
 
 function removeItem(name){
     if(basket[name] > 0){
         basket[name]--;
-        totalKnutas -= items[name];
+        totalKnutas -= items[name].price;
         updateDisplay();
     }
 }
@@ -148,7 +159,7 @@ function updateDisplay(){
 
 function checkout(){
     if(totalKnutas === 0){
-        alert("No items selected!");
+        alert("Nav izvēlēti produkti!");
         return;
     }
 
@@ -156,12 +167,12 @@ function checkout(){
 
     for(let name in basket){
         if(basket[name] > 0){
-            const lineTotal = basket[name] * items[name];
+            const lineTotal = basket[name] * items[name].price;
             receipt += `${name} x${basket[name]} - ${formatMoney(lineTotal)}\n`;
         }
     }
 
-    receipt += "\nTOTAL: " + formatMoney(totalKnutas);
+    receipt += "\nKOPĀ: " + formatMoney(totalKnutas);
 
     alert(receipt);
 }

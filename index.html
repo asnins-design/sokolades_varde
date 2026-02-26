@@ -22,7 +22,7 @@ body {
 }
 
 button {
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 #basket {
@@ -143,7 +143,7 @@ function updateDisplay(){
     }
 
     document.getElementById("total").textContent =
-        "Total: " + formatMoney(totalKnutas);
+        "Kopā jāmaksā: " + formatMoney(totalKnutas);
 }
 
 function checkout(){
@@ -152,7 +152,7 @@ function checkout(){
         return;
     }
 
-    let receipt = "Receipt\n\n";
+    let receipt = "Čeks\n\n";
 
     for(let name in basket){
         if(basket[name] > 0){

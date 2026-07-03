@@ -134,9 +134,9 @@ button {
 <div style="margin-top:20px; background:white; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
     <h3>Samaksāja:</h3>
 
-    <input type="number" id="paidG" placeholder="G" min="0" style="width:60px;">
-    <input type="number" id="paidS" placeholder="S" min="0" style="width:60px;">
-    <input type="number" id="paidK" placeholder="K" min="0" style="width:60px;">
+        <input type="number" id="paidG" placeholder="G" min="0" oninput="calculateChange()">
+        <input type="number" id="paidS" placeholder="S" min="0" oninput="calculateChange()">
+        <input type="number" id="paidK" placeholder="K" min="0" oninput="calculateChange()">
 
     <button onclick="calculateChange()">Aprēķināt atlikumu</button>
 

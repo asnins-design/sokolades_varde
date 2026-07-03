@@ -131,7 +131,19 @@ button {
 <div id="basket"></div>
 
 <div id="total">Kopā jāmaksā: 0G 0S 0K</div>
+<div style="margin-top:20px; background:white; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+    <h3>Samaksāja:</h3>
 
+    <input type="number" id="paidG" placeholder="G" min="0" style="width:60px;">
+    <input type="number" id="paidS" placeholder="S" min="0" style="width:60px;">
+    <input type="number" id="paidK" placeholder="K" min="0" style="width:60px;">
+
+    <button onclick="calculateChange()">Aprēķināt atlikumu</button>
+
+    <div id="change" style="margin-top:10px;font-weight:bold;">
+        Atlikums: 0G 0S 0K
+    </div>
+</div>
 <button class="action-btn" onclick="checkout()">PIRKT</button>
 <button class="action-btn" style="background:#636e72;" onclick="resetBasket()">Jauns pirkums</button>
 
@@ -236,7 +248,26 @@ function updateDisplay(){
     document.getElementById("total").textContent =
         "Kopā jāmaksā: " + formatMoney(totalKnutas);
 }
+function calculateChange(){
 
+    const g = parseInt(document.getElementById("paidG").value) || 0;
+    const s = parseInt(document.getElementById("paidS").value) || 0;
+    const k = parseInt(document.getElementById("paidK").value) || 0;
+
+    const paid = toKnutas(g, s, k);
+
+    if(paid < totalKnutas){
+        const missing = totalKnutas - paid;
+        document.getElementById("change").textContent =
+            "Pietrūkst: " + formatMoney(missing);
+        return;
+    }
+
+    const change = paid - totalKnutas;
+
+    document.getElementById("change").textContent =
+        "Atlikums: " + formatMoney(change);
+}
 function checkout(){
     if(totalKnutas === 0){
         alert("Nav izvēlēti produkti!");

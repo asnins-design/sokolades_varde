@@ -290,10 +290,20 @@ function checkout(){
 
 function resetBasket(){
     totalKnutas = 0;
+
     for(let name in basket){
         basket[name] = 0;
     }
+
     updateDisplay();
+
+    // clear payment inputs
+    document.getElementById("paidG").value = "";
+    document.getElementById("paidS").value = "";
+    document.getElementById("paidK").value = "";
+
+    // reset change display
+    document.getElementById("change").textContent = "Atlikums: 0G 0S 0K";
 }
 </script>
 

@@ -7,10 +7,10 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: Bookman Old Style, times new roman;
     margin: 0;
     padding: 20px;
-    background: #f4f1ea;
+    background: #E2B3FF;
 }
 
 .container {
@@ -25,9 +25,9 @@ h2 {
 .item-row {
     display: flex;
     align-items: center;
-    background: green;
-    padding: 10px;
-    margin: 8px 0;
+    background: white;
+    padding: 8px;
+    margin: 6px 10px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -41,26 +41,26 @@ h2 {
 
 .item-name {
     flex: 1;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 button {
-    padding: 8px 12px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 20px;
+    font-size: 18px;
     cursor: pointer;
     transition: 0.2s;
 }
 
 /* Magical buttons */
 .add-btn {
-    background: #6c5ce7;
+    background: #E2B3FF;
     color: white;
 }
 
 .add-btn:hover {
-    background: #5a4bd1;
+    background: #5B8040;
 }
 
 .remove-btn {
@@ -68,7 +68,7 @@ button {
 }
 
 .remove-btn:hover {
-    background: #b2bec3;
+    background: #DE811D;
 }
 
 .action-btn {
@@ -88,7 +88,7 @@ button {
     margin-top: 15px;
     padding: 10px;
     background: white;
-    border-radius: 0px;
+    border-radius: 10px;
     min-height: 50px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
@@ -97,7 +97,7 @@ button {
     margin-top: 15px;
     font-weight: bold;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 /* Mobile adjustments */
@@ -119,23 +119,29 @@ button {
 </style>
 </head>
 
+
+
+<!SEIT SAKAS ISTAIS KODS>
+
 <body>
 
 <div class="container">
 
 <h2>Šokolādes vardes kase</h2>
 
+
+  
 <div id="items"></div>
 
 <h3>Grozā šobrīd:</h3>
 <div id="basket"></div>
 
 <div id="total">Kopā jāmaksā: 0G 0S 0K</div>
-<div style="margin-top:20px; background:white; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+<div style="margin-top:10px; background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
     <h3>Samaksāja:</h3>
-        <input type="number" id="paidG" placeholder="G" min="0" oninput="calculateChange()">
-        <input type="number" id="paidS" placeholder="S" min="0" oninput="calculateChange()">
-        <input type="number" id="paidK" placeholder="K" min="0" oninput="calculateChange()">
+        <input type="number" id="paidG" placeholder="Galeoni" min="0" oninput="calculateChange()">
+        <input type="number" id="paidS" placeholder="Sirpi" min="0" oninput="calculateChange()">
+        <input type="number" id="paidK" placeholder="Knutas" min="0" oninput="calculateChange()">
     <div id="change" style="margin-top:10px;font-weight:bold;">
         Atlikums: 0G 0S 0K
     </div>
@@ -146,6 +152,18 @@ button {
 
 </div>
 
+
+
+
+
+
+
+<!FUNKCIJAS, SO NEAIZTIEKAM>
+
+
+
+
+  
 <script>
 // Currency system
 const KNUTAS_IN_SIRPS = 5;
@@ -215,6 +233,7 @@ for(let name in items){
 
     itemsDiv.appendChild(row);
 }
+
 
 function addItem(name){
     basket[name]++;
@@ -302,4 +321,5 @@ function resetBasket(){
 </script>
 
 </body>
+  
 </html>

@@ -11,7 +11,7 @@ body {
     padding: 20px;
     background: #E2B3FF;
 }
-    
+
 .layout {
   display: flex;
   gap: 10px;
@@ -21,32 +21,32 @@ body {
     max-width: 700px;
     margin: auto;
 }
+.items-grid #items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
 
 h2 {
     text-align: center;
 }
 
 .item-row {
-  display: flex;
-  align-items: center;
   background: white;
-
-  padding: 5px 14px;   /* more breathing room */
-  margin: 12px auto;    /* more vertical space, centered */
-  max-width: 500px;     /* prevents stretching too wide */
-
+  padding: 12px;
+  margin: 10px 0;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 
-  gap: 10px;            /* space between image/text/buttons */
-  min-height: 50px;     /* makes each row feel “bigger” */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .item-row img {
-    width: 45px;
-    height: 45px;
-    margin-right: 10px;
-    object-fit: contain;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
 .item-name {
@@ -55,11 +55,11 @@ h2 {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     font-size: 18px;
-    cursor: pointer;
+    cursor: url('https://cdn.cursors-4u.net/previews/harry-potter-magical-wand-ef2c54d6-32.webp') 32 32, auto !important;
     transition: 0.2s;
 }
 
@@ -165,13 +165,11 @@ button {
 
   <h2>Šokolādes vardes kase</h2>
 
-  <div class="layout">
-
-    <!-- LEFT SIDE -->
+   <div class="items-grid">
     <div id="items"></div>
-
+   </div>
     <!-- RIGHT SIDE -->
-    <div>
+
 
       <h3>Grozā šobrīd:</h3>
       <div id="basket"></div>
@@ -194,9 +192,6 @@ button {
 
     </div>
 
-  </div>
-
-</div>
 
 
 
@@ -271,10 +266,31 @@ for(let name in items){
     removeBtn.className = "remove-btn";
     removeBtn.onclick = () => removeItem(name);
 
-    row.appendChild(img);
+    const topRow = document.createElement("div");
+    topRow.style.display = "flex";
+    topRow.style.alignItems = "center";
+    topRow.style.justifyContent = "space-between";
+    topRow.style.width = "100%";
+
+    const leftSide = document.createElement("div");
+    leftSide.style.display = "flex";
+    leftSide.style.alignItems = "center";
+    leftSide.style.gap = "10px";
+
+    const btnGroup = document.createElement("div");
+    btnGroup.style.display = "flex";
+    btnGroup.style.gap = "5px";
+
+    leftSide.appendChild(img);
+
+    btnGroup.appendChild(addBtn);
+    btnGroup.appendChild(removeBtn);
+
+    topRow.appendChild(leftSide);
+    topRow.appendChild(btnGroup);
+
+    row.appendChild(topRow);
     row.appendChild(label);
-    row.appendChild(addBtn);
-    row.appendChild(removeBtn);
 
     itemsDiv.appendChild(row);
 }
@@ -366,6 +382,4 @@ function resetBasket(){
 </script>
 
 </body>
-  
-
   

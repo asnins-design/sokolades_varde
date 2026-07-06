@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +12,10 @@ body {
     background: #E2B3FF;
 }
 
+.layout {
+  display: flex;
+  gap: 10px;
+}
 .container {
     max-width: 700px;
     margin: auto;
@@ -23,13 +26,19 @@ h2 {
 }
 
 .item-row {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 8px;
-    margin: 6px 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  background: white;
+
+  padding: 5px 14px;   /* more breathing room */
+  margin: 12px auto;    /* more vertical space, centered */
+  max-width: 500px;     /* prevents stretching too wide */
+
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+
+  gap: 5px;            /* space between image/text/buttons */
+  min-height: 50px;     /* makes each row feel “bigger” */
 }
 
 .item-row img {
@@ -41,7 +50,7 @@ h2 {
 
 .item-name {
     flex: 1;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 button {
@@ -123,35 +132,43 @@ button {
 
 <!SEIT SAKAS ISTAIS KODS>
 
-<body>
-
 <div class="container">
 
-<h2>Šokolādes vardes kase</h2>
+  <h2>Šokolādes vardes kase</h2>
 
+  <div class="layout">
 
-  
-<div id="items"></div>
+    <!-- LEFT SIDE -->
+    <div id="items"></div>
 
-<h3>Grozā šobrīd:</h3>
-<div id="basket"></div>
+    <!-- RIGHT SIDE -->
+    <div>
 
-<div id="total">Kopā jāmaksā: 0G 0S 0K</div>
-<div style="margin-top:10px; background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-    <h3>Samaksāja:</h3>
+      <h3>Grozā šobrīd:</h3>
+      <div id="basket"></div>
+
+      <div id="total">Kopā jāmaksā: 0G 0S 0K</div>
+
+      <div style="margin-top:10px; background:white; padding:10px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <h3>Samaksāja:</h3>
+
         <input type="number" id="paidG" placeholder="Galeoni" min="0" oninput="calculateChange()">
         <input type="number" id="paidS" placeholder="Sirpi" min="0" oninput="calculateChange()">
         <input type="number" id="paidK" placeholder="Knutas" min="0" oninput="calculateChange()">
-    <div id="change" style="margin-top:10px;font-weight:bold;">
-        Atlikums: 0G 0S 0K
+
+        <div id="change" style="margin-top:10px;font-weight:bold;">
+          Atlikums: 0G 0S 0K
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="checkout()">PIRKT</button>
+      <button class="action-btn" style="background:#636e72;" onclick="resetBasket()">JAUNS PIRKUMS</button>
+
     </div>
-</div>
-    
-<button class="action-btn" onclick="checkout()">PIRKT</button>
-<button class="action-btn" style="background:#636e72;" onclick="resetBasket()">JAUNS PIRKUMS</button>
+
+  </div>
 
 </div>
-
 
 
 
@@ -322,4 +339,3 @@ function resetBasket(){
 
 </body>
   
-</html>

@@ -274,7 +274,15 @@ button {
     animation: magicPop 0.5s;
     background: #fff5ff;
 }
-
+.loading-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    color: #777;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 @keyframes magicPop {
     0% {
         transform: scale(1);
@@ -310,6 +318,8 @@ button {
 
 
 
+
+
 <!SEIT SAKAS ISTAIS KODS>
 
 <div class="container">
@@ -320,7 +330,9 @@ button {
   </div>
 
    <div class="items-grid">
-    <div id="items"></div>
+    <div id="items">
+      <div class="loading-message">Ielādē preces...</div>
+    </div>
    </div>
     <!-- RIGHT SIDE -->
 
@@ -410,13 +422,8 @@ function formatMoney(knutas) {
 }
 
 // Items with images
-const items = {
-    "Strupa apmetņu striķi": { price: toKnutas(0,2,3), image: "images/ceturtais.png" },
-    "Sviedene": { price: toKnutas(0,0,4), image: "images/tresais.png" },
-    "Hagrida Zizlis": { price: toKnutas(0,1,2), image: "images/tresais.png" },
-    "Šokolādes varde": { price: toKnutas(0,3,0), image: "images/ceturtais.png" },
-    "Mājas elfs": { price: toKnutas(1,2,3), image: "images/piektais.png" }
-};
+let items = {};
+
 let basket = {};
 let totalKnutas = 0;
 
@@ -424,52 +431,81 @@ for (let name in items) {
     basket[name] = 0;
 }
 
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbx9VJ27vY23xVM4IM-gC99u0YnW2FOIdjH8YdnSrpuYEueyTikOnW4KzhrTyjRdNfxW/exec";
+
 const itemsDiv = document.getElementById("items");
 
-// Create product cards
-for (let name in items) {
-    const row = document.createElement("div");
-    row.className = "item-row";
+async function loadItemsFromSheet() {
+    const response = await fetch(SHEET_URL);
+    const sheetItems = await response.json();
 
-    if (items[name].image) {
-        const img = document.createElement("img");
-        img.src = items[name].image;
-        row.appendChild(img);
-    } else {
-        const placeholder = document.createElement("div");
-        placeholder.className = "item-placeholder";
-        placeholder.textContent = "✦";
-        row.appendChild(placeholder);
-    }
+    items = {};
+    basket = {};
+    totalKnutas = 0;
 
-    const label = document.createElement("div");
-    label.className = "item-name";
+    itemsDiv.innerHTML = "";
 
-    const nameText = document.createElement("div");
-    nameText.className = "product-name";
-    nameText.textContent = name;
+    sheetItems.forEach(item => {
+        items[item.name] = {
+            price: toKnutas(item.g, item.s, item.k),
+            image: item.image
+        };
 
-    const priceText = document.createElement("div");
-    priceText.className = "product-price";
-    priceText.textContent = formatMoney(items[name].price);
+        basket[item.name] = 0;
+    });
 
-    label.appendChild(nameText);
-    label.appendChild(priceText);
-
-    row.appendChild(label);
-
-    // Tap the whole card to add item
-    row.onclick = () => {
-        addItem(name);
-
-        row.classList.add("added");
-        setTimeout(() => {
-            row.classList.remove("added");
-        }, 180);
-    };
-
-    itemsDiv.appendChild(row);
+    createItemCards();
+    updateDisplay();
 }
+
+function createItemCards() {
+    itemsDiv.innerHTML = "";
+
+    for (let name in items) {
+        const row = document.createElement("div");
+        row.className = "item-row";
+
+        if (items[name].image) {
+            const img = document.createElement("img");
+            img.src = items[name].image;
+            row.appendChild(img);
+        } else {
+            const placeholder = document.createElement("div");
+            placeholder.className = "item-placeholder";
+            placeholder.textContent = "✦";
+            row.appendChild(placeholder);
+        }
+
+        const label = document.createElement("div");
+        label.className = "item-name";
+
+        const nameText = document.createElement("div");
+        nameText.className = "product-name";
+        nameText.textContent = name;
+
+        const priceText = document.createElement("div");
+        priceText.className = "product-price";
+        priceText.textContent = formatMoney(items[name].price);
+
+        label.appendChild(nameText);
+        label.appendChild(priceText);
+
+        row.appendChild(label);
+
+        row.onclick = () => {
+            addItem(name);
+
+            row.classList.add("added");
+            setTimeout(() => {
+                row.classList.remove("added");
+            }, 180);
+        };
+
+        itemsDiv.appendChild(row);
+    }
+}
+
+loadItemsFromSheet();
 
 function addItem(name) {
     basket[name]++;
@@ -657,3 +693,5 @@ updateDisplay();
 </script>
 
 </body>
+  
+

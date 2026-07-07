@@ -15,12 +15,10 @@ body {
     max-width: 700px;
     margin: auto;
 }
-    
 .layout {
   display: flex;
   gap: 10px;
 }
-    
 * {
     box-sizing: border-box;
 }
@@ -123,10 +121,10 @@ h2 {
 }
 
 .basket-controls button {
-    width: 50px;
-    height: 44px;
+    width: 46px;
+    height: 40px;
     padding: 0;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 .basket-quantity {
@@ -216,7 +214,7 @@ button {
 
 .money-controls {
     display: grid;
-    grid-template-columns: 50px 60px 50px;
+    grid-template-columns: 46px 55px 46px;
     gap: 6px;
     align-items: center;
 }
@@ -228,9 +226,9 @@ button {
 }
 
 .money-controls button {
-    height: 50px;
+    height: 40px;
     padding: 0;
-    font-size: 24px;
+    font-size: 22px;
 }
 .payment-actions {
     display: grid;
@@ -244,6 +242,54 @@ button {
     padding: 8px;
 }
 
+.shop-header {
+    background: white;
+    padding: 16px 10px;
+    border-radius: 18px;
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.shop-header:active {
+    transform: scale(0.96);
+}
+
+.shop-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #5B2C6F;
+}
+
+.shop-subtitle {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.shop-header.magic {
+    animation: magicPop 0.5s;
+    background: #fff5ff;
+}
+
+@keyframes magicPop {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.06) rotate(-1deg);
+    }
+    70% {
+        transform: scale(0.98) rotate(1deg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}  
+  
 #change {
     font-size: 18px;
     margin-top: 5px;
@@ -268,7 +314,10 @@ button {
 
 <div class="container">
 
-  <h2>Šokolādes vardes kase</h2>
+  <div class="shop-header" onclick="magicTitle()">
+  <div class="shop-title">✨ Šokolādes Varde ✨</div>
+  <div class="shop-subtitle">Pieskaries precei, lai to pievienotu grozam</div>  
+  </div>
 
    <div class="items-grid">
     <div id="items"></div>
@@ -311,6 +360,10 @@ button {
           </div>
         </div>
 
+        <div class="payment-actions">
+          <button type="button" onclick="setExactPayment()">Samaksāja precīzi</button>
+          <button type="button" onclick="clearPaid()">Notīrīt</button>
+        </div>
 
         <div id="change">
           Atlikums: 0G 0S 0K
@@ -578,13 +631,29 @@ function resetBasket() {
 
     document.getElementById("change").textContent = "Atlikums: 0G 0S 0K";
 }
+function magicTitle() {
+    const header = document.querySelector(".shop-header");
+    const subtitle = document.querySelector(".shop-subtitle");
 
+    const messages = [
+        "Pieskaries precei, lai to pievienotu grozam",
+        "Maģiskās cenas tikai šodien!",
+        "Uzmanību: vardes var lēkāt pašas",
+        "Asniņa sveicieni burvju preču pārdevējiem!!!",
+        "Laipni lūgti saldākajā burvju veikalā!"
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    subtitle.textContent = randomMessage;
+
+    header.classList.add("magic");
+
+    setTimeout(() => {
+        header.classList.remove("magic");
+    }, 500);
+}
 // Show empty basket message when page loads
 updateDisplay();
 </script>
 
 </body>
-  
-
-  
-

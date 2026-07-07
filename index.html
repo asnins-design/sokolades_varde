@@ -299,6 +299,23 @@ button {
     border: none;
     border-radius: 10px;
 }    
+
+.watermark {
+    position: fixed;
+    bottom: 6px;
+    right: 8px;
+
+    font-size: 11px;
+    color: rgba(80, 40, 100, 0.55);
+
+    background: rgba(255, 255, 255, 0.45);
+    padding: 4px 7px;
+    border-radius: 10px;
+
+    pointer-events: none;
+    z-index: 999;
+}
+    
 @keyframes magicPop {
     0% {
         transform: scale(1);
@@ -404,7 +421,9 @@ button {
       </button>
     </div>
 
-
+<div class="watermark">
+  Kases izstrādi veicis Heksalions Asniņš ✨
+</div>
 
 
 

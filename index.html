@@ -29,7 +29,7 @@ h2 {
 
 .items-grid #items {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
 }
 
@@ -493,8 +493,6 @@ function createCustomItemCard() {
 }
 
 function addCustomItem() {
-    const customName = prompt("Preces nosaukums:", "Cita prece") || "Cita prece";
-
     const g = parseInt(prompt("Cik galeoni?", "0")) || 0;
     const s = parseInt(prompt("Cik sirpi?", "0")) || 0;
     const k = parseInt(prompt("Cik knutas?", "0")) || 0;
@@ -506,15 +504,17 @@ function addCustomItem() {
         return;
     }
 
-    const customKey = "custom-" + Date.now();
+    const customKey = "custom-" + price;
 
-    items[customKey] = {
-        displayName: customName,
-        price: price,
-        image: ""
-    };
+    if (!items[customKey]) {
+        items[customKey] = {
+            displayName: "Cita prece (" + formatMoney(price) + ")",
+            price: price,
+            image: ""
+        };
 
-    basket[customKey] = 0;
+        basket[customKey] = 0;
+    }
 
     addItem(customKey);
 }

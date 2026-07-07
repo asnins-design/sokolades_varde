@@ -287,7 +287,18 @@ button {
     border: 2px dashed #9b59b6;
     background: #fff5ff;
 }
-    
+.sheet-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+
+    background: #5B2C6F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}    
 @keyframes magicPop {
     0% {
         transform: scale(1);
@@ -388,7 +399,9 @@ button {
       </div>
 
       <button class="action-btn" style="background:#636e72;" onclick="resetBasket()">JAUNS PIRKUMS</button>
-
+      <button class="sheet-btn" onclick="showComingSoonMessage()">
+          Mainīt preces
+      </button>
     </div>
 
 
@@ -757,6 +770,9 @@ function magicTitle() {
 }
 // Show empty basket message when page loads
 updateDisplay();
+function showComingSoonMessage() {
+    alert("IZSTRĀDES STADIJĀ\nJa kaut ko vajag labot, zvani Asniņam: 25900970");
+}
 </script>
 
 </body>

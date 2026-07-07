@@ -309,7 +309,26 @@ button {
     font-size: 12px;
     color: rgba(80, 40, 100, 0.65);
 }
-    
+.search-bar {
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 12px 0;
+    padding: 12px;
+
+    border: none;
+    border-radius: 14px;
+
+    font-size: 16px;
+    font-family: inherit;
+
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-bar:focus {
+    outline: 2px solid #9b59b6;
+}    
 @keyframes magicPop {
     0% {
         transform: scale(1);
@@ -355,7 +374,13 @@ button {
   <div class="shop-title">✨ Šokolādes Varde ✨</div>
   <div class="shop-subtitle">Pieskaries precei, lai to pievienotu grozam</div>  
   </div>
-
+    <input 
+      type="text" 
+      id="searchInput" 
+      class="search-bar" 
+      placeholder="Meklēt preci..."
+      oninput="filterItems()"
+    >
    <div class="items-grid">
     <div id="items">
       <div class="loading-message">Ielādē preces...</div>
@@ -786,6 +811,20 @@ function magicTitle() {
 updateDisplay();
 function showComingSoonMessage() {
     alert("IZSTRĀDES STADIJĀ\nJa kaut ko vajag labot, zvani Asniņam: 25900970");
+}
+function filterItems() {
+    const searchText = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".item-row");
+
+    cards.forEach(card => {
+        const productName = card.textContent.toLowerCase();
+
+        if (productName.includes(searchText)) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
 }
 </script>
 

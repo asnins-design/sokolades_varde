@@ -80,7 +80,7 @@ h2 {
 
 .product-name {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
     margin-top: 6px;
 }
 
@@ -449,7 +449,12 @@ async function loadItemsFromSheet() {
     totalKnutas = 0;
 
     itemsDiv.innerHTML = "";
+    sheetItems.sort((a, b) => {
+        const priceA = toKnutas(a.g, a.s, a.k);
+        const priceB = toKnutas(b.g, b.s, b.k);
 
+        return priceB - priceA; // most expensive first
+    });
     sheetItems.forEach(item => {
         items[item.name] = {
             price: toKnutas(item.g, item.s, item.k),

@@ -1,3 +1,4 @@
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -200,6 +201,47 @@ button {
     border: 1px solid #ccc;
     font-size: 14px;
 }
+  
+.money-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.money-row span {
+    font-weight: bold;
+}
+
+.money-controls {
+    display: grid;
+    grid-template-columns: 36px 50px 36px;
+    gap: 5px;
+    align-items: center;
+}
+
+.money-controls input {
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.money-controls button {
+    padding: 6px 0;
+    font-size: 16px;
+}
+
+.payment-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.payment-actions button {
+    font-size: 14px;
+    padding: 8px;
+}
 
 #change {
     font-size: 18px;
@@ -241,9 +283,37 @@ button {
       <div class="payment-box">
         <h3>Samaksāja:</h3>
 
-        <input type="number" id="paidG" placeholder="Galeoni" min="0" oninput="calculateChange()">
-        <input type="number" id="paidS" placeholder="Sirpi" min="0" oninput="calculateChange()">
-        <input type="number" id="paidK" placeholder="Knutas" min="0" oninput="calculateChange()">
+        <div class="money-row">
+          <span>Galeoni</span>
+          <div class="money-controls">
+            <button type="button" onclick="changePaid('paidG', -1)">-</button>
+            <input type="number" id="paidG" value="0" readonly>
+            <button type="button" onclick="changePaid('paidG', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="money-row">
+          <span>Sirpi</span>
+          <div class="money-controls">
+            <button type="button" onclick="changePaid('paidS', -1)">-</button>
+            <input type="number" id="paidS" value="0" readonly>
+            <button type="button" onclick="changePaid('paidS', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="money-row">
+          <span>Knutas</span>
+          <div class="money-controls">
+            <button type="button" onclick="changePaid('paidK', -1)">-</button>
+            <input type="number" id="paidK" value="0" readonly>
+            <button type="button" onclick="changePaid('paidK', 1)">+</button>
+          </div>
+        </div>
+
+        <div class="payment-actions">
+          <button type="button" onclick="setExactPayment()">Samaksāja precīzi</button>
+          <button type="button" onclick="clearPaid()">Notīrīt</button>
+        </div>
 
         <div id="change">
           Atlikums: 0G 0S 0K
@@ -257,7 +327,11 @@ button {
 
 
 
+
+
+
 <!FUNKCIJAS, SO NEAIZTIEKAM>
+
 
 
 
@@ -293,7 +367,6 @@ const items = {
     "Šokolādes varde": { price: toKnutas(0,3,0), image: "images/ceturtais.png" },
     "Mājas elfs": { price: toKnutas(1,2,3), image: "images/piektais.png" }
 };
-
 let basket = {};
 let totalKnutas = 0;
 
@@ -440,6 +513,39 @@ function calculateChange() {
         "Atlikums: " + formatMoney(change);
 }
 
+function changePaid(id, amount) {
+    const input = document.getElementById(id);
+    let current = parseInt(input.value) || 0;
+
+    current += amount;
+
+    if (current < 0) {
+        current = 0;
+    }
+
+    input.value = current;
+    calculateChange();
+}
+
+function setExactPayment() {
+    const exact = fromKnutas(totalKnutas);
+
+    document.getElementById("paidG").value = exact.g;
+    document.getElementById("paidS").value = exact.s;
+    document.getElementById("paidK").value = exact.k;
+
+    calculateChange();
+}
+
+function clearPaid() {
+    document.getElementById("paidG").value = 0;
+    document.getElementById("paidS").value = 0;
+    document.getElementById("paidK").value = 0;
+
+    calculateChange();
+}  
+  
+  
 function checkout() {
     if (totalKnutas === 0) {
         alert("Nav izvēlēti produkti!");
@@ -469,9 +575,9 @@ function resetBasket() {
 
     updateDisplay();
 
-    document.getElementById("paidG").value = "";
-    document.getElementById("paidS").value = "";
-    document.getElementById("paidK").value = "";
+    document.getElementById("paidG").value = 0;
+    document.getElementById("paidS").value = 0;
+    document.getElementById("paidK").value = 0;
 
     document.getElementById("change").textContent = "Atlikums: 0G 0S 0K";
 }
@@ -481,5 +587,7 @@ updateDisplay();
 </script>
 
 </body>
+  
+
   
 
